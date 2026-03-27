@@ -1,5 +1,7 @@
-matrizA = [[2, 1], [3, 4]]
-matrizB = [[16], [5]] 
+matrizA = [[2, 1], 
+           [3, 4]]
+matrizB = [[16], 
+           [5]] 
 
 def matrixMultiplication(a, b):
     linhasA= len(a)
@@ -43,6 +45,31 @@ def alfabeto(matriz):
             matrizNova.insert(matriz[i][j], alfabeto[matriz[i][j]-1])
     print(matrizNova)
 
-matrizresult = matrixMultiplication(matrizA, matrizB)
-pmod = pmodulo(matrizresult, 26)
-alfabeto(pmod)
+def transformaEmNumero(matriz):
+    alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
+            'H', 'I', 'J', 'K', 'L', 'M', 'N',
+            'O', 'P', 'Q', 'R', 'S', 'T',
+            'U', 'V', 'W', 'X', 'Y', 'Z']
+    linhasM = len(matriz)
+    colunasM = len(matriz[0])
+    matrizNova = []
+
+    for i in range(linhasM):
+        for j in range(colunasM):
+                for w in range(len(alfabeto)):
+                    if matriz[i][j] == alfabeto[w]:
+                        matrizNova.append(w)
+    n = 2
+    divisao = [matrizNova[i:i + n] for i in range(0, len(matrizNova), n)]
+    return divisao
+
+def hillCipher(p, k):
+    p = list(p.upper())
+    n = 2
+    divisao = [p[i:i + n] for i in range(0, len(p), n)]
+    pNum = transformaEmNumero(divisao)
+
+    mult = matrixMultiplication(pNum, k)
+    return mult
+
+print(hillCipher('oiasda', matrizA))
