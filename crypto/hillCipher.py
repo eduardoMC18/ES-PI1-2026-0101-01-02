@@ -16,8 +16,8 @@ def matrixMultiplication(a, b):
         linha = []
         for j in range(colunasB):
             soma = 0
-            for k in range(colunasA):
-                soma += a[i][k] * b[k][j]
+            soma += a[i][j] * b[i][j]
+            print(a[i][j], b[i][j])
             linha.append(soma)
         matrizResultado.append(linha)
 
@@ -43,7 +43,6 @@ def alfabeto(matriz):
     for i in range(linhasM):
         for j in range(colunasM):
             matrizNova.insert(matriz[i][j], alfabeto[matriz[i][j]-1])
-    print(matrizNova)
 
 def transformaEmNumero(matriz):
     alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
@@ -68,8 +67,13 @@ def hillCipher(p, k):
     n = 2
     divisao = [p[i:i + n] for i in range(0, len(p), n)]
     pNum = transformaEmNumero(divisao)
-
-    mult = matrixMultiplication(pNum, k)
-    return mult
-
-print(hillCipher('oiasda', matrizA))
+    pNum1 = pNum[:2]
+    pNum2 = pNum[2:]
+    mult1 = matrixMultiplication(pNum1, k)
+    mult2 = matrixMultiplication(pNum2, k)
+    print(mult1, mult2)
+    # cpmod = pmodulo(mult, 26)
+    # c = alfabeto(cpmod)
+    # return c
+c = hillCipher('pene', matrizA)
+print(c)
