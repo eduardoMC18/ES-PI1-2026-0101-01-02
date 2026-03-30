@@ -16,8 +16,8 @@ def matrixMultiplication(a, b):
         linha = []
         for j in range(colunasB):
             soma = 0
-            soma += a[i][j] * b[i][j]
-            # print(a[i][j], b[i][j])
+            for k in range(colunasA):  # 🔥 aqui está o segredo
+                soma += a[i][k] * b[k][j]
             linha.append(soma)
         matrizResultado.append(linha)
 
@@ -77,5 +77,10 @@ def hillCipher(p, k):
     # cpmod = pmodulo(mult, 26)
     # c = alfabeto(cpmod)
     # return c
-c = hillCipher('pene', matrizA)
-print(c)
+# c = hillCipher('pene', matrizA)
+# print(c)
+
+m1 = [[1],[2],[3]]
+m = [[1, 2, 3]]
+result = matrixMultiplication(m1, m)
+print(result)
