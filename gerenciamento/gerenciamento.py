@@ -18,30 +18,28 @@ matrixMultiplication(matrizA, matrizB)
 #         self.mesario = mesario
 
 def menu():
-    a = input("escolha uma opção:\n1-cadastrar eleitor\n2-buscar eleitor\n3-listar eleitor\n4-remover celeitor\n5-editar eleitor")
-    match a:
-        case "1": 
-            cadastrar_eleitor()
-        # case 2:
-        #     # buscar_eleitor()
-        # case 3:
-        #     # remover_eleitor()
-        # case 4:
-        #     # editar_eleitor()
-        # case 5:
-        #     # listar_eleitor()
-        case "2":
-           print("Sair..")
-            
-# cadastrar
-# registrar
-# buscar
-# remover
-# editar
-# listar
-
-   
-
+    a = int(input("escolha uma opção:\n1-cadastrar eleitor\n2-buscar eleitor\n3-listar eleitor\n4-remover celeitor\n5-editar eleitor\n6- Sair\n"))
+    while not a == 6:
+        match a:
+            case 1: 
+                cadastrar_eleitor()
+                menu()
+            case 2:
+                # buscar_eleitor()
+                menu()
+            case 3:
+                # remover_eleitor()
+                menu()
+            case 4:
+                # editar_eleitor()
+                menu()
+            case 5:
+                # listar_eleitor()
+                menu()
+            case 6:
+                print("Encerrando programa...")
+                break      
+ 
 def cadastrar_eleitor():
     nome = input("digite o nome: ")
     cpf = input("digite o cpf: ")
@@ -54,4 +52,7 @@ def cadastrar_eleitor():
     novo_eleitor = Eleitor(nome=nome, cpf=cpf, titulo=titulo, mesario=mesario)
     print(f"Usuario cadastrado com sucesso\nnome: {novo_eleitor.nome}\ncpf: {novo_eleitor.cpf}")
 
-#para rodar: python -m gerenciamento.gerenciamento
+
+
+# cadastrar_eleitor()
+menu()
