@@ -55,4 +55,27 @@ def cadastrar_eleitor():
 
 
 # cadastrar_eleitor()
-menu()
+
+def validar_cpf(cpf):
+    if len(cpf) != 11:
+        print("CPF Inválido.")
+    else:
+        soma = 0
+        for i in range(9):
+            soma += int(cpf[i]) * (10 - i)
+        resto = soma % 11
+        num1 = 0 if resto < 2 else 11 - resto
+
+        soma = 0
+        for i in range(10):
+            soma += int(cpf[i]) * (11 - i)
+        resto = soma % 11
+        num2 = 0 if resto < 2 else 11 - resto
+
+        if str(num1) == cpf[9] and str(num2) == cpf[10]:
+            print("CPF Validado com Sucesso")
+        else:
+            print("CPF Inválido")
+
+
+validar_cpf("14551744751")
