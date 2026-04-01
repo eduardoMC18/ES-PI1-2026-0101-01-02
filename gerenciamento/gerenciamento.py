@@ -1,8 +1,14 @@
 import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parents[1]))
-from models.eleitor import Eleitor
+import os
 
+sys.path.append(os.path.abspath(".."))
+
+from crypto.hillCipher import matrixMultiplication
+matrizA = [[2, 1], 
+           [3, 4]]
+matrizB = [[16], 
+           [5]] 
+matrixMultiplication(matrizA, matrizB)
 
 # class Eleitor:
 #     def __init__(self, nome, titulo, cpf, mesario):
@@ -48,7 +54,4 @@ def cadastrar_eleitor():
     novo_eleitor = Eleitor(nome=nome, cpf=cpf, titulo=titulo, mesario=mesario)
     print(f"Usuario cadastrado com sucesso\nnome: {novo_eleitor.nome}\ncpf: {novo_eleitor.cpf}")
 
-
-# menu()
-e = Eleitor(nome="João", cpf="12345678900", titulo_eleitor="123456789012", mesario=False)
-print(e.nome)
+#para rodar: python -m gerenciamento.gerenciamento
