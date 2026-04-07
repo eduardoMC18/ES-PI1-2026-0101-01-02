@@ -2,7 +2,7 @@ import gerenciamento.infra.database
 def menu():
     a = 0
     while not a == 6:
-        a = int(input("escolha uma opção:\n1-cadastrar eleitor\n2-buscar eleitor\n3-listar eleitor\n4-remover celeitor\n5-editar eleitor\n6- Sair\n"))
+        a = int(input("escolha uma opção:\n1-cadastrar eleitor\n2-buscar eleitor\n3-remover eleitor\n4-editar eleitor\n5-listar eleitor\n6- Sair\n"))
         match a:
             case 1: 
                 cadastrar_eleitor()
@@ -31,9 +31,9 @@ def menu():
  
 
 def cadastrar_eleitor():
-        nome = input("digite o nome: ")
-        cpf = input("digite o cpf: ")
-        titulo_eleitor = input("digite o titulo: ")
+        nome = input("Digite o nome: ")
+        cpf = input("Digite o cpf: ")
+        titulo_eleitor = input("Digite o titulo: ")
         mesario = input("É mesario? (y/n)")
         chave_acesso = "123456" #Teste
         if mesario == 'y':
@@ -188,6 +188,86 @@ def remover_eleitor(conexao):
 
     except Error as e:
         print("Erro ao remover:", e)
+
+# Editar Eleitor
+def editar_eleitor():
+    print("\nEditar eleitor:")
+    print("1 - Buscar por CPF")
+    print("2 - Buscar por título de eleitor")
+    opcao = input("Escolha uma opção: ")
     
+    if opcao == "1":
+        valor = input("Digite o CPF (apenas números): ")
+        if not validar_cpf(valor):
+            print("CPF inválido.")
+            return
+        campo = "cpf"
+
+    else:
+        if opcao == "2":
+            valor = input("Digite o título de eleitor (apenas números): ")
+            campo = "titulo"
+
+        else:
+            print("Opção inválida.")
+            return
         
+    try:
+        cursor = conexao.cursor(dictionary=True)
+
+        
+        sql_busca = "SELECT * FROM eleitores WHERE " + campo + " = %s"
+        cursor.execute(sql_busca, (valor,))
+        eleitor = cursor.fetchone()
+
+        if not eleitor:
+                    print("Nenhum eleitor encontrado com os dados informados.")
+                    cursor.close()
+                    return
+        
+        print("\nEleitor encontrado:")
+        print("  Nome:   ", eleitor["nome"])
+        print("  CPF:    ", eleitor["cpf"])
+        print("  Título: ", eleitor["titulo"])
+        
+        if mesario:
+            print("  Mesário:  Sim")
+        else:
+            print("  Mesário:  Não")
+
+        print("\nDigite os novos dados (deixe vazio para mantar os dados atuais)")
+
+        novo_nome = input("Novo nome:")
+        novo_titulo = input("Novo título")
+        novo_mesario = input("É mesário? se sim, digite Sim")
+
+        if novo_nome == "":
+            novo_nome = eleitor["nome"]
+
+        if novo_titulo == "":
+            novo_titulo = eleitor["titulo"]
+
+        if novo_mesario == "":
+            novo_mesario = eleitor["mesario"]
+        else:
+            if novo_mesario == "Sim":
+                True
+            else:
+                False
+
+        sql_update = """
+        UPDATE eleitores
+        SET nome = %s, titulo = %s, mesario = %s
+        WHERE """ + campo + " = %s"
+
+        cursor.execute(sql_update, (novo_nome, novo_titulo, novo_mesario, valor))
+        conexao.commit()
+
+        print("Eleitor atualizado com sucesso")
+
+        cursor.close()
+
+        except Error as e:
+        print("Erro ao atualizar:", e)
+
 menu()
