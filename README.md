@@ -91,7 +91,24 @@ Nosso sistema,a partir da Cifra De Hill, utiliza da criptografia para proteger d
 
 -Protocolo de votação
 
-## Como executar nosso sistema
+# Como executar nosso sistema
+## Pré-Requisitos
+- Python 3.14
+- MySQL instalado e configurado
+- mysql-connector-python
+- datetime (biblioteca padrão do Python)
+- Git
+- GitHub
+
+## Passo a Passo
+1. No Github, clique em "Code", e faça o Download do projeto
+2. Abra o VSCode ou PyCharm, clique em File > Open Folder, e selecione a pasta do projeto.
+3. Abra o terminal dentro do VSCode ou PyCharm. Menu terminal > New Terminal, e digite: "pip install mysql-connector-python".
+4. Abra o MySQL Workbench (ou outro gerenciador de banco de dados) e crie um banco de dados para o projeto (ex: sistema_votacao).
+5. No código do projeto, localize as configurações de conexão com o banco de dados (host, user, password) e insira suas credenciais do MySQL.
+6. Ainda no terminal do VSCode ou PyCharm, execute o sistema com o comando: "python main.py".
+7. O sistema irá iniciar no terminal e estará pronto para uso.
+
 
 
 
