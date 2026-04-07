@@ -4,7 +4,7 @@ import gerenciamento.infra.database
 def menu():
     a = 0
     while not a == 6:
-        a = int(input("escolha uma opção:\n1-cadastrar eleitor\n2-buscar eleitor\n3-listar eleitor\n4-remover celeitor\n5-editar eleitor\n6- Sair\n"))
+        a = int(input("escolha uma opção:\n1-cadastrar eleitor\n2-buscar eleitor\n3-remover eleitor\n4-editar eleitor\n5-listar eleitor\n6- Sair\n"))
         match a:
             case 1: 
                 cadastrar_eleitor()
@@ -31,9 +31,9 @@ def menu():
  
 
 def cadastrar_eleitor():
-        nome = input("digite o nome: ")
-        cpf = input("digite o cpf: ")
-        titulo_eleitor = input("digite o titulo: ")
+        nome = input("Digite o nome: ")
+        cpf = input("Digite o cpf: ")
+        titulo_eleitor = input("Digite o titulo: ")
         mesario = input("É mesario? (y/n)")
         chave_acesso = "123456" #Teste
         if mesario == 'y':
