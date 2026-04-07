@@ -1,4 +1,6 @@
+from mysql.connector import Error
 import gerenciamento.infra.database
+
 def menu():
     a = 0
     while not a == 6:
@@ -8,15 +10,13 @@ def menu():
                 cadastrar_eleitor()
                 #POST
             case 2:
-                # buscar_eleitor()
+                buscar_eleitor(gerenciamento.infra.database.conexao)
                 #SELECT
-                pass
             case 3:
-                # remover_eleitor()
+                remover_eleitor(gerenciamento.infra.database.conexao)
                 #DELETE
-                pass
             case 4:
-                # editar_eleitor()
+                editar_eleitor()
                 #UPDATE
                 pass
             case 5:
@@ -68,7 +68,7 @@ def validar_cpf(cpf):
         else:
             return False
 
-# Busca um eleitor pelo CPF ou Titulo de eleitor. Dados provinientes do Banco de dados.
+# Busca eleitor
 def buscar_eleitor(conexao):
 
     print("Buscar eleitor: ")
@@ -108,14 +108,14 @@ def buscar_eleitor(conexao):
             print("\nEleitor encontrado:")
             print("  Nome:   ", eleitor["nome"])
             print("  CPF:    ", eleitor["cpf"])
-            print("  Título: ", eleitor["titulo"])
+            print("  Título: ", eleitor["titulo_eleitor"])
 
             if eleitor["mesario"] == 1:
                 print("  Mesário: Sim")
             else:
                 print("  Mesário: Não")
 
-            print("  Status: ", eleitor["status"])
+            print("  Status: ", eleitor["status_voto"])
 
         else:
             print("Nenhum eleitor encontrado com os dados informados.")
@@ -140,7 +140,7 @@ def remover_eleitor(conexao):
     else:
         if opcao == "2":
             valor = input("Digite o título de eleitor (apenas números): ")
-            campo = "titulo"
+            campo = "titulo_eleitor"
 
         else:
             print("Opção inválida.")
@@ -164,14 +164,14 @@ def remover_eleitor(conexao):
         print("Eleitor encontrado:")
         print("  Nome:   ", eleitor["nome"])
         print("  CPF:    ", eleitor["cpf"])
-        print("  Título: ", eleitor["titulo"])
+        print("  Título: ", eleitor["titulo_eleitor"])
 
         if eleitor["mesario"] == 1:
             print("  Mesário: Sim")
         else:
             print("  Mesário: Não")
 
-        print("  Status: ", eleitor["status"])
+        print("  Status: ", eleitor["status_voto"])
 
         
         confirmacao = input("\nDeseja realmente remover este eleitor? (s/n): ")
@@ -188,6 +188,108 @@ def remover_eleitor(conexao):
 
     except Error as e:
         print("Erro ao remover:", e)
+
+
+
+def editar_eleitor():
+    print("\nEditar eleitor:")
+    print("1 - Buscar por CPF")
+    print("2 - Buscar por título de eleitor")
+    opcao = input("Escolha uma opção: ")
+    
+    if opcao == "1":
+        valor = input("Digite o CPF (apenas números): ")
+        if not validar_cpf(valor):
+            print("CPF inválido.")
+            return
+        campo = "cpf"
+
+    else:
+        if opcao == "2":
+            valor = input("Digite o título de eleitor (apenas números): ")
+            campo = "titulo"
+
+        else:
+            print("Opção inválida.")
+            return
+        
+    try:
+        cursor = gerenciamento.infra.database.conexao.cursor(dictionary=True)
+        
+        sql_busca = "SELECT * FROM eleitores WHERE " + campo + " = %s"
+        cursor.execute(sql_busca, (valor,))
+        eleitor = cursor.fetchone()
+
+        if not eleitor:
+            print("Nenhum eleitor encontrado.")
+            cursor.close()
+            return
+
+        print(f"\nEleitor encontrado: {eleitor['nome']}")
+
+
+        print("\nDigite os novos dados (deixe vazio para manter os atuais)")
+        novo_nome = input("Novo nome: ")
+        novo_titulo = input("Novo título: ")
+        novo_mesario_input = input("É mesário? (Sim/Não): ")
+
+        
+        if novo_nome == "":
+            novo_nome = eleitor["nome"]
+            
+        if novo_titulo == "":
+            novo_titulo = eleitor["titulo_eleitor"]
+
+        if novo_mesario_input == "":
+            novo_mesario = eleitor["mesario"]
+        else:
+            novo_mesario = 1 if novo_mesario_input.lower() == "sim" else 0
+
+        sql_update = f"UPDATE eleitores SET nome = %s, titulo_eleitor = %s, mesario = %s WHERE {campo} = %s"
+        
+        cursor.execute(sql_update, (novo_nome, novo_titulo, novo_mesario, valor))
+        gerenciamento.infra.database.conexao.commit()
+        
+        print("Dados do eleitor atualizados com sucesso!")
+        cursor.close()
+
+    except Error as e:
+        print("Erro ao atualizar:", e)
+
+        print("\nDigite os novos dados (deixe vazio para manter os atuais)")
+        novo_nome = input("Novo nome: ")
+        novo_titulo = input("Novo título: ")
+        novo_mesario = input("É mesário? (Sim/Não): ")
+
+        if novo_nome == "":
+         novo_nome = eleitor["nome"]
+
+         if novo_titulo == "":
+          novo_titulo = eleitor["titulo_eleitor"]
+
+        if novo_mesario == "":
+            novo_mesario = eleitor["mesario"]
+        else:
+            if novo_mesario.lower() == "sim":
+             novo_mesario = 1
+            else:
+             novo_mesario = 0
+
+
+        sql_update = """
+        UPDATE eleitores
+        SET nome = %s, titulo_eleitor = %s, mesario = %s
+        WHERE """ + campo + " = %s"
+
+        cursor.execute(sql_update, (novo_nome, novo_titulo, novo_mesario, valor))
+        gerenciamento.infra.databaseconexao.commit()
+
+        print("Eleitor atualizado com sucesso")
+
+        cursor.close()
+
+    except Error as e:
+            print("Erro ao atualizar:", e)
     
         
 menu()
