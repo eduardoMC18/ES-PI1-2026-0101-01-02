@@ -60,22 +60,35 @@ O sistema foi projetado com foco em segurança e organização.
 
 ## Integrantes (Grupo 1-2)
 -Eduardo Martins Colmati
+
 -Enzo Carleti Teixeira
+
 -Gustavo de Oliveira de Santana
+
 -José Gabriel Bedani
+
 
 ## Tecnologias Utilizadas
 -Python 3.14
+
 -MySQL
+
 -MySQL Connector-Python
+
 -Datetime
+
 -Git
+
 -Github
+
 
 ## Segurança e Criptografia
 Nosso sistema,a partir da Cifra De Hill, utiliza da criptografia para proteger dados sensíveis, como:
+
 -CPF dos Eleitores
+
 -Chave de acesso
+
 -Protocolo de votação
 
 ## Como executar nosso sistema
