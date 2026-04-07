@@ -20,8 +20,14 @@ def listar_usuarios():
     cursor.execute("SELECT id, nome, cpf FROM eleitores")
     for(id, nome, cpf) in cursor.fetchall():
         print(f"ID: {id} Nome: {nome} CPF: {cpf}")
-    
-listar_usuarios()
+
+
+def post_eleitor(nome, cpf, titulo, mesario, chave_acesso):
+    sql = "INSERT INTO eleitores(nome, cpf, titulo_eleitor, mesario, chave_acesso)"
+    values = (nome, cpf, titulo, mesario, chave_acesso)
+
+    cursor.execute(sql, values)
+    conexao.commit()
 
 
 cursor.close()
