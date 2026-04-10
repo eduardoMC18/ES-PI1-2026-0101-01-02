@@ -28,11 +28,13 @@ def pmodulo(matriz, valor):
     colunasM = len(matriz[0])
     matrizmod = []
     for i in range(linhasM):
+        list = []
         for j in range(colunasM):
-            matrizmod.insert(matriz[i][j], [matriz[i][j] % valor])
+            list.append(matriz[i][j] % valor)
+        matrizmod.append(list)
     return matrizmod
 
-def alfabeto(matriz):
+def transformaEmLetra(matriz):
     alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
             'H', 'I', 'J', 'K', 'L', 'M', 'N',
             'O', 'P', 'Q', 'R', 'S', 'T',
@@ -42,7 +44,8 @@ def alfabeto(matriz):
     matrizNova = []
     for i in range(linhasM):
         for j in range(colunasM):
-            matrizNova.insert(matriz[i][j], alfabeto[matriz[i][j]-1])
+            matrizNova.insert(matriz[i][j], alfabeto[matriz[i][j]])
+    return matrizNova
 
 def transformaEmNumero(matriz):
     alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
@@ -58,29 +61,39 @@ def transformaEmNumero(matriz):
                 for w in range(len(alfabeto)):
                     if matriz[i][j] == alfabeto[w]:
                         matrizNova.append(w)
-    n = 2
-    divisao = [matrizNova[i:i + n] for i in range(0, len(matrizNova), n)]
+    divisao = [matrizNova[i:i + 2] for i in range(0, len(matrizNova), 2)]
     return divisao
+
+
+def transporMatriz(m):
+    mT = []
+    for i in range(len(m)):
+        list = []
+        for j in range(len(m[0])):
+            list.append(m[j][i])
+        mT.append(list)
+    return mT
+
 
 def hillCipher(p, k):
     p = list(p.upper())
-    n = 2
-    divisao = [p[i:i + n] for i in range(0, len(p), n)]
-    pNum = transformaEmNumero(divisao)
+    divisao = [p[i:i + 2] for i in range(0, len(p), 2)]
+    divisaoT = transporMatriz(divisao)
+    pNum = transformaEmNumero(divisaoT)
+    mult = matrixMultiplication(k, pNum)
 
-    for i in range(len(pNum)):
-        pNum1 = pNum[i]
-        mult = matrixMultiplication(pNum1, k)
-        lista =[]
-        lista.append(mult)
-    print(lista)
+    multMod = pmodulo(mult, 26)
+    result = transformaEmLetra(multMod)
+    print(result)
+    # result = transformaEmLetra(multMod)
+    # print(result)
+    # for i in range(len(pNum)):
+    #     pNum1 = pNum[i]
+        # mult = matrixMultiplication(pNum1, k)
+    #     lista =[]
+    #     lista.append(mult)
+    # print(lista)
     # cpmod = pmodulo(mult, 26)
     # c = alfabeto(cpmod)
     # return c
-# c = hillCipher('pene', matrizA)
-# print(c)
-
-m1 = [[1],[2],[3]]
-m = [[1, 2, 3]]
-result = matrixMultiplication(m1, m)
-print(result)
+c = hillCipher('PENE', matrizA)
