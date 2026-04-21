@@ -1,6 +1,14 @@
 import random
 from mysql.connector import Error
 import gerenciamento.infra.database
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+from crypto.hillCipher import *
+
+
 def inicio():
     while True:
         option = int(input("Escolha qual área deseja acessar:\n1-Gerenciamento\n2-Votação\n3-Encerrrar Programa"))
@@ -21,7 +29,34 @@ def inicio():
                 print("Opcão Inválida")
 
 
+chave = [[2, 1], [3, 4]]
 
+
+def criptografaChave(chave_acesso, matriz):
+    p1 = chave_acesso[:3] + "X"
+    p1 = hillCipher(p1, matriz)
+    p2 = hillCipherNum(chave_acesso[-4:], matriz)
+    result = ''
+    for i in range(len(p1)):
+        for j in range(len(p1[0])):
+            result += str(p1[i][j])
+            result += str(p2[i][j])
+
+    return result
+
+def criptografaCPF(cpf, matriz):
+    cpf = cpf + "0"
+    print(cpf[8:12])
+    p1 = hillCipherNum(cpf[:4], matriz)
+    p2 = hillCipherNum(cpf[4:8], matriz)
+    p3 = hillCipherNum(cpf[8:12], matriz)
+    result = ''
+    for i in range(len(p1)):
+        for j in range(len(p1[0])):
+            result += str(p1[i][j])
+            result += str(p2[i][j])
+            result += str(p3[i][j])
+    return result
 
 def menu():
     a = 0
@@ -65,10 +100,13 @@ def cadastrar_eleitor():
         else:
             mesario = False
         if validar_cpf(cpf):
-            gerenciamento.infra.database.post_eleitor(nome, cpf, titulo_eleitor, mesario, chave_acesso) 
+            chave_acesso_crypto = criptografaChave(chave_acesso, chave)
+            cpf_crypto = criptografaCPF(cpf, chave)
+            gerenciamento.infra.database.post_eleitor(nome, cpf_crypto, titulo_eleitor, mesario, chave_acesso_crypto) 
             return print(f"Usuario cadastrado com sucesso\nNome: {nome}\nCPF: {cpf}\nChave de Acesso: {chave_acesso}")
         else:
             return print("CPF invalido")
+        
         
 def validar_cpf(cpf):
     if len(cpf) != 11:
@@ -343,4 +381,4 @@ def editar_eleitor():
     except Error as e:
             print("Erro ao atualizar:", e)    
 
-inicio()
+# inicio()

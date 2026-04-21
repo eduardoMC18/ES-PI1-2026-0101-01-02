@@ -79,16 +79,35 @@ def hillCipher(p, k):
     p = list(p.upper())
     divisao = [p[i:i + 2] for i in range(0, len(p), 2)]
     pNum = transformaEmNumero(divisao)
+    pNum = transporMatriz(pNum)
     mult = matrixMultiplication(k, pNum)
+    mult = transporMatriz(mult)
+
+    multMod = pmodulo(mult, 26)
+    result = transformaEmLetra(multMod)
+    return result
+
+def hillCipherNum(p, k):
+    p = list(p)
+    divisao = [p[i:i + 2] for i in range(0, len(p), 2)]
+    # pNum = transformaEmNumero(divisao)
+    pNum = transporMatriz(divisao)
+    for i in range(len(pNum)):
+        for j in range(len(pNum[i])):
+            pNum[i][j] = int(pNum[i][j])
+    mult = matrixMultiplication(k, pNum)
+    mult = transporMatriz(mult)
 
     multMod = pmodulo(mult, 26)
     result = transformaEmLetra(multMod)
     return result
 
 
-c = hillCipher('abra', matrizA)
 
-print(c)
+c = hillCipherNum("5485", matrizA)
+c2 = hillCipherNum("4174", matrizA)
+c3 = hillCipherNum("8540", matrizA)
+print(c, c2, c3)
 
 def matrixAdj(m):
     mAdj = []
@@ -131,7 +150,6 @@ def decifrar(k, c):
     mult = matrizxnum(inversoDetK, kAdj)
     kInverso = pmodulo(mult, 26)
     
-    c = list(c.upper())
     cNum = transformaEmNumero(c)
     cNumT = transporMatriz(cNum)
     p = matrixMultiplication(kInverso, cNumT)
@@ -142,4 +160,21 @@ def decifrar(k, c):
     palavra = sum(palavra, [])
     return palavra
 
-print(decifrar(matrizA, 'ijed'))
+def decifrarNum(k, c):
+    detK = determinante(k)
+    inversoDetK = inversoDet(detK)
+    kAdj = matrixAdj(k)
+    mult = matrizxnum(inversoDetK, kAdj)
+    kInverso = pmodulo(mult, 26)
+    
+    cNum = transformaEmNumero(c)
+    cNumT = transporMatriz(cNum)
+    p = matrixMultiplication(kInverso, cNumT)
+    pMod = pmodulo(p, 26)
+    palavra = transporMatriz(pMod)
+    return palavra
+
+p = decifrarNum(matrizA, c)
+p2 = decifrarNum(matrizA, c2)
+p3 = decifrarNum(matrizA, c3)
+print(p, p2, p3)
