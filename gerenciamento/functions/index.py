@@ -90,6 +90,35 @@ def validar_cpf(cpf):
             return True
         else:
             return False
+            
+def validar_titulo(titulo_eleitor):
+    if len(titulo_eleitor) != 12:
+        return False
+
+    n_sequencial = titulo_eleitor[:8]
+    uf = titulo_eleitor[8:10]
+    dv1p = int(titulo_eleitor[10])
+    dv2p = int(titulo_eleitor[11])
+
+    numeros = [2,3,4,5,6,7,8,9]
+    soma = sum(int(n_sequencial[i]) * numeros[i] for i in range(8))
+    resto = soma % 11
+    dv1  = 0 if resto == 10 or 11 else resto
+
+    soma2 = ((int(uf[0]) * 7) + (int(uf[1]) * 8) + (dv1 * 9))
+    resto2 = soma2 % 11
+    dv2 = 0 if resto2 == 10 or 11 else resto2
+
+    if uf == "01" or "02":
+        if resto == 0:
+            dv1 = 1
+        if resto2 == 0:
+            dv2 = 1
+
+    if dv1p == dv1 and dv2p == dv2:
+        return True
+    else:
+        return False
 
 # Busca eleitor
 def buscar_eleitor(conexao):
