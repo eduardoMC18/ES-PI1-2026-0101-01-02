@@ -102,13 +102,6 @@ def hillCipherNum(p, k):
     result = transformaEmLetra(multMod)
     return result
 
-
-
-c = hillCipherNum("5485", matrizA)
-c2 = hillCipherNum("4174", matrizA)
-c3 = hillCipherNum("8540", matrizA)
-print(c, c2, c3)
-
 def matrixAdj(m):
     mAdj = []
     for i in range(len(m)):
@@ -173,8 +166,3 @@ def decifrarNum(k, c):
     pMod = pmodulo(p, 26)
     palavra = transporMatriz(pMod)
     return palavra
-
-p = decifrarNum(matrizA, c)
-p2 = decifrarNum(matrizA, c2)
-p3 = decifrarNum(matrizA, c3)
-print(p, p2, p3)

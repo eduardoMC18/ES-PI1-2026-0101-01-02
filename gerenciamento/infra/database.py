@@ -17,9 +17,9 @@ except mysql.connector.Error as error:
 
 
 def listar_usuarios():
-    cursor.execute("SELECT id, nome, cpf FROM eleitores")
-    for(id, nome, cpf) in cursor.fetchall():
-        print(f"ID: {id} Nome: {nome} CPF: {cpf}")
+    cursor.execute("SELECT id, nome FROM eleitores")
+    for(id, nome) in cursor.fetchall():
+        print(f"ID: {id} Nome: {nome}")
 
 
 def post_eleitor(nome, cpf, titulo_eleitor, mesario, chave_acesso):

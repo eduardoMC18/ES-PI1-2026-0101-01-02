@@ -11,7 +11,7 @@ from crypto.hillCipher import *
 
 def inicio():
     while True:
-        option = int(input("Escolha qual área deseja acessar:\n1-Gerenciamento\n2-Votação\n3-Encerrrar Programa"))
+        option = int(input("Escolha qual área deseja acessar:\n1-Gerenciamento\n2-Votação\n3-Encerrrar Programa\n"))
         match option:
             case 1: 
                 print("\n\n")
@@ -64,23 +64,29 @@ def menu():
         a = int(input("Escolha uma opção:\n1-Cadastrar eleitor\n2-Buscar eleitor\n3-Remover eleitor\n4-Editar eleitor\n5-Listar eleitor\n6- Sair\n"))
         match a:
             case 1: 
+                print("\n")
                 cadastrar_eleitor()
                 #POST
             case 2:
+                print("\n")
                 buscar_eleitor(gerenciamento.infra.database.conexao)
                 #SELECT
             case 3:
+                print("\n")
                 remover_eleitor(gerenciamento.infra.database.conexao)
                 #DELETE
             case 4:
+                print("\n")
                 editar_eleitor()
                 #UPDATE
                 pass
             case 5:
+                print("\n")
                 gerenciamento.infra.database.listar_usuarios()
                 #GET OU SELECT
                 pass
             case 6:
+                print("\n")
                 print("Voltando...")
                 break
             case _:
@@ -92,7 +98,6 @@ def cadastrar_eleitor():
         cpf = input("Digite o cpf: ")
         titulo_eleitor = input("Digite o titulo: ")
         mesario = input("É mesario? (y/n)")
-        chave_acesso = "123456"
         sobrenome = nome.split(" ")
         chave_acesso =  nome[0:2].upper() + sobrenome[1][0].upper()  + str(random.randint(1000,9999))
         if mesario == 'y':
@@ -100,12 +105,17 @@ def cadastrar_eleitor():
         else:
             mesario = False
         if validar_cpf(cpf):
-            chave_acesso_crypto = criptografaChave(chave_acesso, chave)
-            cpf_crypto = criptografaCPF(cpf, chave)
-            gerenciamento.infra.database.post_eleitor(nome, cpf_crypto, titulo_eleitor, mesario, chave_acesso_crypto) 
-            return print(f"Usuario cadastrado com sucesso\nNome: {nome}\nCPF: {cpf}\nChave de Acesso: {chave_acesso}")
+            if validar_titulo(titulo_eleitor):
+                 chave_acesso_crypto = criptografaChave(chave_acesso, chave)
+                 cpf_crypto = criptografaCPF(cpf, chave)
+                 gerenciamento.infra.database.post_eleitor(nome, cpf_crypto, titulo_eleitor, mesario, chave_acesso_crypto) 
+                 return print(f"Usuario cadastrado com sucesso\nNome: {nome}\nCPF: {cpf}\nChave de Acesso: {chave_acesso}")
+            else:
+                return print("Titulo Inválido")
+        
         else:
             return print("CPF invalido")
+
         
         
 def validar_cpf(cpf):
@@ -132,31 +142,33 @@ def validar_cpf(cpf):
 def validar_titulo(titulo_eleitor):
     if len(titulo_eleitor) != 12:
         return False
-
+    
     n_sequencial = titulo_eleitor[:8]
     uf = titulo_eleitor[8:10]
     dv1p = int(titulo_eleitor[10])
     dv2p = int(titulo_eleitor[11])
 
-    numeros = [2,3,4,5,6,7,8,9]
-    soma = sum(int(n_sequencial[i]) * numeros[i] for i in range(8))
+    soma = 0
+    pesos1 = [2, 3, 4, 5, 6, 7, 8, 9]
+    for i in range(8):
+        soma += int(n_sequencial[i]) * pesos1[i]
+    
     resto = soma % 11
-    dv1  = 0 if resto == 10 or 11 else resto
+    dv1 = 0 if resto >= 10 else resto
 
-    soma2 = ((int(uf[0]) * 7) + (int(uf[1]) * 8) + (dv1 * 9))
+    if uf in ["01", "02"]:
+        if resto == 10 or resto == 0:
+            dv1 = 1 if resto == 0 else 0 
+
+    soma2 = (int(uf[0]) * 7) + (int(uf[1]) * 8) + (dv1 * 9)
     resto2 = soma2 % 11
-    dv2 = 0 if resto2 == 10 or 11 else resto2
+    dv2 = 0 if resto2 >= 10 else resto2
+    
+    if uf in ["01", "02"]:
+        if resto2 == 10 or resto2 == 0:
+            dv2 = 1 if resto2 == 0 else 0
 
-    if uf == "01" or "02":
-        if resto == 0:
-            dv1 = 1
-        if resto2 == 0:
-            dv2 = 1
-
-    if dv1p == dv1 and dv2p == dv2:
-        return True
-    else:
-        return False
+    return dv1p == dv1 and dv2p == dv2
 
 # Busca eleitor
 def buscar_eleitor(conexao):
@@ -177,7 +189,7 @@ def buscar_eleitor(conexao):
     else:
         if opcao == "2":
             titulo = input("Digite o título de eleitor (apenas números): ")
-            campo = "titulo"
+            campo = "titulo_eleitor"
             valor = titulo
 
         else:
@@ -222,7 +234,7 @@ def remover_eleitor(conexao):
 
     if opcao == "1":
         valor = input("Digite o CPF (apenas números): ")
-        if not validar_cpf(valor):
+        if not (valor):
             print("CPF inválido.")
             return
         campo = "cpf"
@@ -297,7 +309,7 @@ def editar_eleitor():
     else:
         if opcao == "2":
             valor = input("Digite o título de eleitor (apenas números): ")
-            campo = "titulo"
+            campo = "titulo_eleitor"
 
         else:
             print("Opção inválida.")
@@ -381,4 +393,4 @@ def editar_eleitor():
     except Error as e:
             print("Erro ao atualizar:", e)    
 
-# inicio()
+inicio()
