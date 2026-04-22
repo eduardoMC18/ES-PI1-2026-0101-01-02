@@ -33,7 +33,8 @@ chave = [[2, 1], [3, 4]]
 
 
 def criptografaChave(chave_acesso, matriz):
-    p1 = chave_acesso[:3] + "X"
+    p1 = chave_acesso[:3] + chave_acesso[2]
+
     p1 = hillCipher(p1, matriz)
     p2 = hillCipherNum(chave_acesso[-4:], matriz)
     result = ''
@@ -43,6 +44,7 @@ def criptografaChave(chave_acesso, matriz):
             result += str(p2[i][j])
 
     return result
+criptografaChave("ASD1234", chave)
 
 def criptografaCPF(cpf, matriz):
     cpf = cpf + "0"
@@ -183,8 +185,9 @@ def buscar_eleitor(conexao):
         if not validar_cpf(cpf):
             print("CPF inválido.")
             return
+        cpf_crypto = criptografaCPF(cpf, chave)
         campo = "cpf"
-        valor = cpf
+        valor = cpf_crypto
 
     else:
         if opcao == "2":
@@ -233,10 +236,12 @@ def remover_eleitor(conexao):
     opcao = input("Escolha uma opção: ")
 
     if opcao == "1":
-        valor = input("Digite o CPF (apenas números): ")
-        if not (valor):
+        cpf = input("Digite o CPF (apenas números): ")
+        if not validar_cpf(cpf):
             print("CPF inválido.")
             return
+        cpf_crypto = criptografaCPF(cpf, chave)
+        valor = cpf_crypto
         campo = "cpf"
 
     else:
@@ -300,12 +305,13 @@ def editar_eleitor():
     opcao = input("Escolha uma opção: ")
     
     if opcao == "1":
-        valor = input("Digite o CPF (apenas números): ")
-        if not validar_cpf(valor):
+        cpf = input("Digite o CPF (apenas números): ")
+        if not validar_cpf(cpf):
             print("CPF inválido.")
             return
+        cpf_crypto = criptografaCPF(cpf, chave)
+        valor = cpf_crypto
         campo = "cpf"
-
     else:
         if opcao == "2":
             valor = input("Digite o título de eleitor (apenas números): ")
