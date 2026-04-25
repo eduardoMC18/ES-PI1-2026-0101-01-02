@@ -165,3 +165,12 @@ def decifrarNum(k, c):
     pMod = pmodulo(p, 26)
     palavra = transporMatriz(pMod)
     return palavra
+
+# c1 = hillCipherNum('5485',matrizA)
+# c2 = hillCipherNum('4174',matrizA)
+# c3 = hillCipherNum('8540',matrizA)
+# print(c1, c2, c3)
+# p1 = decifrarNum(matrizA, c1)
+# p2 = decifrarNum(matrizA, c2)
+# p3 = decifrarNum(matrizA, c3)
+# print(p1, p2, p3)

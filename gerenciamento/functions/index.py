@@ -7,6 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'
 
 import gerenciamento.infra.database
 from crypto.hillCipher import *
+from utils.utils import criptografaCPF, criptografaChave, chave
 
 
 def inicio():
@@ -27,38 +28,6 @@ def inicio():
                 break
             case _:
                 print("Opcão Inválida")
-
-
-chave = [[2, 1], [3, 4]]
-
-
-def criptografaChave(chave_acesso, matriz):
-    p1 = chave_acesso[:3] + chave_acesso[2]
-
-    p1 = hillCipher(p1, matriz)
-    p2 = hillCipherNum(chave_acesso[-4:], matriz)
-    result = ''
-    for i in range(len(p1)):
-        for j in range(len(p1[0])):
-            result += str(p1[i][j])
-            result += str(p2[i][j])
-
-    return result
-criptografaChave("ASD1234", chave)
-
-def criptografaCPF(cpf, matriz):
-    cpf = cpf + "0"
-    print(cpf[8:12])
-    p1 = hillCipherNum(cpf[:4], matriz)
-    p2 = hillCipherNum(cpf[4:8], matriz)
-    p3 = hillCipherNum(cpf[8:12], matriz)
-    result = ''
-    for i in range(len(p1)):
-        for j in range(len(p1[0])):
-            result += str(p1[i][j])
-            result += str(p2[i][j])
-            result += str(p3[i][j])
-    return result
 
 def menu():
     a = 0
@@ -400,3 +369,6 @@ def editar_eleitor():
             print("Erro ao atualizar:", e)    
 
 inicio()
+
+
+#chaves: AND8175, EDC2412
