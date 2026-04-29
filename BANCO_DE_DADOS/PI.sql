@@ -30,4 +30,7 @@ FOREIGN KEY (id_eleitor) REFERENCES eleitores(id)
 INSERT INTO eleitores (nome, cpf, titulo_eleitor, chave_acesso)
 VALUES ("Eleitor Teste", "130201", "10320320", "1249124");
 
+ALTER TABLE voto
+DELETE COLUMN id_candidato
+
 
