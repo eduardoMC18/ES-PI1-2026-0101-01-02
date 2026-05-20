@@ -255,7 +255,7 @@ def resultado_votacao():
                 estatistica_de_comparecimento(gerenciamento.infra.database.conexao)
             case 3:
                 print("\n")
-                # votos_por_partido()
+                conta_partido_votos()
             case 4:
                 print('\n')
                 validacao_integridade(gerenciamento.infra.database.conexao)

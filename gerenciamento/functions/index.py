@@ -44,12 +44,19 @@ def gerenciamento_menu():
  
 
 def cadastrar_eleitor():
-        nome = input("Digite o nome: ")
+        nome = input("Digite o nome: ").strip()  
+        partes_nome = nome.split()
+        if len(partes_nome) < 2:
+            print("\nNome inválido! É obrigatório digitar o nome completo (Nome e Sobrenome).")
+            print("Retornando ao menu principal...\n")
+            return
+        
+        primeiro_nome = partes_nome[0]
+        sobrenome = partes_nome[1]
         cpf = input("Digite o cpf: ")
         titulo_eleitor = input("Digite o titulo: ")
         mesario = input("É mesario? (y/n)")
-        sobrenome = nome.split(" ")
-        chave_acesso =  nome[0:2].upper() + sobrenome[1][0].upper()  + str(random.randint(1000,9999))
+        chave_acesso = primeiro_nome[0:2].upper() + sobrenome[0].upper() + str(random.randint(1000, 9999))
         if mesario == 'y':
             mesario = True
         else:
