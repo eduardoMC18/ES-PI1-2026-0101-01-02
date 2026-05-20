@@ -49,7 +49,7 @@ def fecharVotacao(conexao):
                     cursor.execute("UPDATE eleitores SET status_voto = 1 WHERE id < 9999")
                     print("Votação encerrada com sucesso!")
                     log_encerramento()
-                    votacao_menu()
+                    return
                     return 0  # VotacaoAberta = 0
                 else:
                     print("Chave de acesso incorreta. Encerramento cancelado.")
@@ -57,7 +57,7 @@ def fecharVotacao(conexao):
 
             else:
                 print("Encerramento cancelado. Voltando ao menu anterior.")
-                menu_sistema_votacao()
+                return
     
         else:
             print("Você não tem permissão para encerrar o sistema de votação\n\n")
@@ -142,7 +142,7 @@ def abrirSistemaVotacao(conexao):
             else:
                 print("Processo não iniciado, voltando a página inicial")
                 AbrirVotacao = 'n'
-                votacao_menu()
+                return
 
         else:
             print("Você não tem permissão para abrir o sistema de votação\n\n")
