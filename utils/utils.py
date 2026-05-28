@@ -81,8 +81,8 @@ def criptografaProtocolo(protocolo, matriz):
     except Exception as e:
         return e
     
-    
-
+def limpar():
+    os.system('cls' if os.name == 'nt' else 'clear')
 # print(descriptografaCPF('OFVSJQSLVSIM',chave))
 # print(criptografaCPF('54854174854', chave))
 

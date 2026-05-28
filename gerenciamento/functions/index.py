@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'
 
 import gerenciamento.infra.database
 from crypto.hillCipher import *
-from utils.utils import criptografaCPF, criptografaChave, chave, descriptografaCPF
+from utils.utils import criptografaCPF, criptografaChave, chave, descriptografaCPF, limpar
 
 
 def gerenciamento_menu():
@@ -16,27 +16,27 @@ def gerenciamento_menu():
         a = int(input("Escolha uma opção:\n1-Cadastrar eleitor\n2-Buscar eleitor\n3-Remover eleitor\n4-Editar eleitor\n5-Listar eleitor\n6- Sair\n\nEscolha uma opção: "))
         match a:
             case 1: 
-                print("\n")
+                limpar()
                 cadastrar_eleitor()
                 #POST
             case 2:
-                print("\n")
+                limpar()
                 buscar_eleitor(gerenciamento.infra.database.conexao)
                 #SELECT
             case 3:
-                print("\n")
+                limpar()
                 remover_eleitor(gerenciamento.infra.database.conexao)
                 #DELETE
             case 4:
-                print("\n")
+                limpar()
                 editar_eleitor()
                 #UPDATE
             case 5:
-                print("\n")
+                limpar()
                 gerenciamento.infra.database.listar_usuarios()
                 #GET OU SELECT
             case 6:
-                print("\n\n")
+                limpar()
                 print("Voltando...")
                 return
             case _:

@@ -6,12 +6,11 @@ import os
 from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from utils.utils import criptografaCPF, criptografaChave, criptografaProtocolo,descriptografaCPF, chave
+from utils.utils import criptografaCPF, criptografaChave, criptografaProtocolo,descriptografaCPF, chave, limpar
 import gerenciamento.infra.database
 from gerenciamento.infra.database import conta_votos, conta_partido_votos
 from crypto.hillCipher import *
 from Logs.ocorrencias import log_abertura, log_acesso_negado, log_voto_duplo, log_voto_sucesso, log_encerramento, exibir_logs
-
 
 def fecharVotacao(conexao):
     titulo_eleitor = input("Digite o titulo de eleitor: ")
@@ -72,15 +71,16 @@ def votacao_menu():
         a = int(input("Escolha uma opção:\n1-Sistema Votação\n2-Auditoria Do Sistema de Votação\n3-Resultado da Votação\n4- Sair\n\nEscolha uma opção: "))
         match a:
             case 1: 
-                print("\n")
+                limpar()
                 abrirSistemaVotacao(gerenciamento.infra.database.conexao)
             case 2:
-                print("\n")
+                limpar()
                 exibir_logs()
             case 3:
-                print("\n")
+                limpar()
                 resultado_votacao()
             case 4:
+                limpar()
                 print("Saindo...")
                 return
             case _:
@@ -157,8 +157,10 @@ def menu_sistema_votacao():
     a = input("")
     match a:
         case '1':
+            limpar()
             votacao(gerenciamento.infra.database.conexao)
         case '2':
+            limpar()
             fecharVotacao(gerenciamento.infra.database.conexao)
         case _:
             print("Opcão Inválida")
@@ -248,19 +250,19 @@ def resultado_votacao():
         options = int(input("Escolha uma opção:\n1-Boletim de Urna\n2-Estatísticas de Comparecimento\n3-Votos por Partido\n4-Validação de Integridade\n5- Sair\n\nEscolha uma opção: "))
         match options:
             case 1: 
-                print("\n")
+                limpar()
                 boletim_urna(gerenciamento.infra.database.conexao)
             case 2:
-                print("\n")
+                limpar()
                 estatistica_de_comparecimento(gerenciamento.infra.database.conexao)
             case 3:
-                print("\n")
+                limpar()
                 conta_partido_votos()
             case 4:
-                print('\n')
+                limpar()
                 validacao_integridade(gerenciamento.infra.database.conexao)
             case 5:
-                print('\n')
+                limpar()
                 print('Saindo...')
                 return
             case _:
