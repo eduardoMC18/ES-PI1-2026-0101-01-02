@@ -46,3 +46,18 @@
 [2026-05-20 13:38:35] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
 [2026-05-20 13:39:02] SUCESSO: Voto realizado com sucesso
 [2026-05-20 13:39:25] ENCERRAMENTO: Votação finalizada com sucesso.
+[2026-05-29 21:35:27] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
+[2026-05-29 21:36:11] SUCESSO: Voto realizado com sucesso
+[2026-05-29 21:36:22] ALERTA: Tentativa de voto duplo
+[2026-05-29 21:36:46] ALERTA: Tentativa de acesso negado
+[2026-05-29 21:37:12] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
+[2026-05-29 21:37:28] SUCESSO: Voto realizado com sucesso
+[2026-05-29 21:38:07] SUCESSO: Voto realizado com sucesso
+[2026-05-29 21:38:38] ALERTA: Tentativa de acesso negado
+[2026-05-29 21:39:19] SUCESSO: Voto realizado com sucesso
+[2026-05-29 21:40:10] ENCERRAMENTO: Votação finalizada com sucesso.
+[2026-05-29 21:46:18] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
+[2026-05-29 21:46:33] SUCESSO: Voto realizado com sucesso
+[2026-05-29 21:47:12] SUCESSO: Voto realizado com sucesso
+[2026-05-29 21:48:12] SUCESSO: Voto realizado com sucesso
+[2026-05-29 21:48:54] ENCERRAMENTO: Votação finalizada com sucesso.

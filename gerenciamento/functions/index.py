@@ -13,28 +13,23 @@ from utils.utils import criptografaCPF, criptografaChave, chave, descriptografaC
 def gerenciamento_menu():
     a = 0
     while a != 6:
-        a = int(input("Escolha uma opção:\n1-Cadastrar eleitor\n2-Buscar eleitor\n3-Remover eleitor\n4-Editar eleitor\n5-Listar eleitor\n6- Sair\n\nEscolha uma opção: "))
+        a = int(input("Escolha uma opção:\n1-Cadastrar eleitor\n2-Buscar eleitor\n3-Remover eleitor\n4-Editar eleitor\n5-Listar eleitor\n6-Voltar\n\nEscolha uma opção: "))
         match a:
             case 1: 
                 limpar()
                 cadastrar_eleitor()
-                #POST
             case 2:
                 limpar()
                 buscar_eleitor(gerenciamento.infra.database.conexao)
-                #SELECT
             case 3:
                 limpar()
                 remover_eleitor(gerenciamento.infra.database.conexao)
-                #DELETE
             case 4:
                 limpar()
                 editar_eleitor()
-                #UPDATE
             case 5:
                 limpar()
                 gerenciamento.infra.database.listar_usuarios()
-                #GET OU SELECT
             case 6:
                 limpar()
                 print("Voltando...")
@@ -73,35 +68,6 @@ def cadastrar_eleitor():
         else:
             return print("CPF invalido")
 
-
-def cadastrar_candidato():
-    nome = input("Digite o nome do candidato: ")
-    numero = input("Digite o número de votação: ")
-    partido = input("Digite o partido: ")
-
-    try:
-        cursor = gerenciamento.infra.database.conexao.cursor(dictionary=True)
-
-        sql_busca = "SELECT * FROM candidatos WHERE numero = %s"
-        cursor.execute(sql_busca, (numero,))
-        candidato_existente = cursor.fetchone()
-
-        if candidato_existente:
-            print("Já existe um candidato com esse número. Cadastro cancelado.")
-            cursor.close()
-            return
-
-        sql_insert = "INSERT INTO candidatos (nome, numero, partido) VALUES (%s, %s, %s)"
-        cursor.execute(sql_insert, (nome, numero, partido))
-        gerenciamento.infra.database.conexao.commit()
-
-        print(f"Candidato cadastrado com sucesso!\nNome: {nome}\nNúmero: {numero}\nPartido: {partido}")
-        cursor.close()
-
-    except Error as e:
-        print("Erro ao cadastrar candidato:", e)
-
-        
         
 def validar_cpf(cpf):
     if len(cpf) != 11:

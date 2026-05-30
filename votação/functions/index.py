@@ -39,17 +39,14 @@ def fecharVotacao(conexao):
     
             if confirmar == 'sim':    
 
-                #segunda confirmacao da chave:
                 chave_confirmacao = input("Digite novamente sua chave de acesso para confirmar: ")
                 chave_confirmacao_crypto = criptografaChave(chave_confirmacao, chave)
 
                 if chave_confirmacao_crypto == eleitor['chave_acesso']:
                     cursor = conexao.cursor()
-                    cursor.execute("UPDATE eleitores SET status_voto = 1 WHERE id < 9999")
                     print("Votação encerrada com sucesso!")
                     log_encerramento()
                     return
-                    return 0  # VotacaoAberta = 0
                 else:
                     print("Chave de acesso incorreta. Encerramento cancelado.")
                     log_acesso_negado()
@@ -68,7 +65,7 @@ def fecharVotacao(conexao):
 def votacao_menu():
     a = 0
     while a != 4:
-        a = int(input("Escolha uma opção:\n1-Sistema Votação\n2-Auditoria Do Sistema de Votação\n3-Resultado da Votação\n4- Sair\n\nEscolha uma opção: "))
+        a = int(input("Escolha uma opção:\n1-Sistema Votação\n2-Auditoria Do Sistema de Votação\n3-Resultado da Votação\n4-Voltar\n\nEscolha uma opção: "))
         match a:
             case 1: 
                 limpar()
@@ -81,7 +78,7 @@ def votacao_menu():
                 resultado_votacao()
             case 4:
                 limpar()
-                print("Saindo...")
+                print("Voltando...")
                 return
             case _:
                 print("Opcão Inválida")
@@ -123,7 +120,6 @@ def abrirSistemaVotacao(conexao):
                     cursor = conexao.cursor()
                     cursor.execute("TRUNCATE TABLE votos")
                     cursor.execute("UPDATE eleitores SET status_voto = 0 WHERE id < 9999")
-                    # cursor.execute("UPDATE votos SET status_voto = true")
                     
                     conexao.commit()
 
@@ -247,7 +243,7 @@ def votacao(conexao):
 def resultado_votacao():
     options = 0
     while not options == 5:
-        options = int(input("Escolha uma opção:\n1-Boletim de Urna\n2-Estatísticas de Comparecimento\n3-Votos por Partido\n4-Validação de Integridade\n5- Sair\n\nEscolha uma opção: "))
+        options = int(input("Escolha uma opção:\n1-Boletim de Urna\n2-Estatísticas de Comparecimento\n3-Votos por Partido\n4-Validação de Integridade\n5-Voltar\n\nEscolha uma opção: "))
         match options:
             case 1: 
                 limpar()
@@ -263,7 +259,7 @@ def resultado_votacao():
                 validacao_integridade(gerenciamento.infra.database.conexao)
             case 5:
                 limpar()
-                print('Saindo...')
+                print('Voltando...')
                 return
             case _:
                 print("Opcão Inválida")
