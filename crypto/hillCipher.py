@@ -3,6 +3,11 @@ matrizB = [[16],
            [5]] 
 
 def matrixMultiplication(a, b):
+    """
+    Multiplica duas matrizes a e b e retorna a matriz resultado.
+    Entrada: matrizes a e b (array)
+    Saída: matrizResultado (array)
+    """
     linhasA= len(a)
     colunasA = len(a[0])
     linhasB = len(b)
@@ -23,6 +28,13 @@ def matrixMultiplication(a, b):
     return matrizResultado
 
 def pmodulo(matriz, valor):
+    """
+    Divide todos os elementos de uma matriz por um valor e coloca no lugar de cada elemento o resto
+    da divisão.
+
+    Entrada: matriz (array) e valor (int)
+    Saída: matrizmod (array)
+    """
     linhasM = len(matriz)
     colunasM = len(matriz[0])
     matrizmod = []
@@ -34,6 +46,12 @@ def pmodulo(matriz, valor):
     return matrizmod
 
 def transformaEmLetra(matriz):
+    """
+    Pega cada elemento da matriz e substitui por uma letra correspondente a sua localização no alfabeto.
+
+    Entrada: matriz com numeros (array)
+    Saída: matrizNova com letras(array)
+    """
     alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
             'H', 'I', 'J', 'K', 'L', 'M', 'N',
             'O', 'P', 'Q', 'R', 'S', 'T',
@@ -47,6 +65,12 @@ def transformaEmLetra(matriz):
     return matrizNova
 
 def transformaEmNumero(matriz):
+    """
+    Recebe a matriz de letras e substitui por numeros correspondentes a sua localização no alfabeto.
+
+    Entrada: matriz com letras (array)
+    Saída: matriz com numeros (array)
+    """
     alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
             'H', 'I', 'J', 'K', 'L', 'M', 'N',
             'O', 'P', 'Q', 'R', 'S', 'T',
@@ -65,6 +89,12 @@ def transformaEmNumero(matriz):
 
 
 def transporMatriz(m):
+    """
+    Recebe uma matriz e retorna a mesma transposta, ou seja, com as linhas no lugar das colunas e colunas no lugar das linhas.
+
+    Entrada: matriz m (array)
+    Saída: matriz m transposta (array)
+    """
     mT = []
     for i in range(len(m)):
         list = []
@@ -75,6 +105,13 @@ def transporMatriz(m):
 
 
 def hillCipher(p, k):
+    """
+    Transforma a matriz p em numeros. Transpõe a matriz p. Multiplica p por uma chave k. Transpõe o resultado da multiplicação.
+    Faz o pmodulo da matriz e transforma em letra para completar o processo da cifra de hill.
+
+    Entrada: matriz a ser criptografada p (array) e chave de criptografia k (array)
+    Saída: matriz com letras resultado da criptografia (array)
+    """
     p = list(p.upper())
     divisao = [p[i:i + 2] for i in range(0, len(p), 2)]
     pNum = transformaEmNumero(divisao)
@@ -87,6 +124,12 @@ def hillCipher(p, k):
     return result
 
 def hillCipherNum(p, k):
+    """
+    Faz o mesmo processo da cifra de hill, porém com uma matriz p de numeros inteiros.
+
+    Entrada: matriz a ser criptografada p (array) e chave de criptografia k (array)
+    Saída: matriz com letras resultado da criptografia (array)
+    """
     p = list(p)
     divisao = [p[i:i + 2] for i in range(0, len(p), 2)]
     # pNum = transformaEmNumero(divisao)
@@ -102,6 +145,12 @@ def hillCipherNum(p, k):
     return result
 
 def matrixAdj(m):
+    """
+    Faz a matriz adjunta de uma matriz m.
+
+    Entrada: matriz 2x2 m (array)
+    Saída: matriz 2x2 m adjunta (array)
+    """
     mAdj = []
     for i in range(len(m)):
         list = []
@@ -116,10 +165,22 @@ def matrixAdj(m):
     return mAdj
 
 def determinante(m):
+    """
+    Calcula o determinante de uma matriz m 2x2.
+
+    Entrada: matriz m 2x2 (array)
+    Saída: determinante de m (int)
+    """
     det = (m[0][0] * m[1][1])-(m[0][1] * m[1][0])
     return det
 
 def inversoDet(det):
+    """
+    Calcula o inverso da determinante em modulo de 26.
+
+    Entrada: determinante (int)
+    Saída: inverso da determinante (int)
+    """
     a = [1, 3 ,5, 9, 11, 15, 17, 19, 21, 23]
     aInverso = [1, 9, 21, 15, 3, 19, 7, 23, 11, 5, 17]
     for i in range(len(a)):
@@ -128,6 +189,12 @@ def inversoDet(det):
     return detInverso
 
 def matrizxnum(num, matriz):
+    """
+    Faz a multiplicação de uma matriz por um número inteiro.
+
+    Entrada: num (int) e matriz 2x2 (array)
+    Saída: matriz 2x2 (array)
+    """
     linhas= len(matriz)
     colunas = len(matriz[0])
     for i in range(linhas):
@@ -136,6 +203,13 @@ def matrizxnum(num, matriz):
     return matriz
 
 def decifrar(k, c):
+    """
+    Encontra a matriz inversa de k. Multiplica k inverso pela matriz criptografada e compila o resultado da descriptografia
+    em uma string.
+
+    Entrada: matriz chave k (array) e matriz criptografada c (array)
+    Saída: palavra descriptografada (string)
+    """
     detK = determinante(k)
     inversoDetK = inversoDet(detK)
     kAdj = matrixAdj(k)
@@ -153,6 +227,12 @@ def decifrar(k, c):
     return palavra
 
 def decifrarNum(k, c):
+    """
+    Faz o mesmo processo de descriptografia porém com uma matriz c de numeros inteiros.
+
+    Entrada: matriz chave k (array) e matriz criptografada c de inteiros(array)
+    Saída: palavra descriptografada (string)
+    """
     detK = determinante(k)
     inversoDetK = inversoDet(detK)
     kAdj = matrixAdj(k)
@@ -165,12 +245,3 @@ def decifrarNum(k, c):
     pMod = pmodulo(p, 26)
     palavra = transporMatriz(pMod)
     return palavra
-
-# c1 = hillCipherNum('5485',matrizA)
-# c2 = hillCipherNum('4174',matrizA)
-# c3 = hillCipherNum('8540',matrizA)
-# print(c1, c2, c3)
-# p1 = decifrarNum(matrizA, c1)
-# p2 = decifrarNum(matrizA, c2)
-# p3 = decifrarNum(matrizA, c3)
-# print(p1, p2, p3)

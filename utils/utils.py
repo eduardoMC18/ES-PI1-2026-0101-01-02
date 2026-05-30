@@ -11,6 +11,13 @@ chave = [[2, 1], [3, 4]]
 
 
 def criptografaChave(chave_acesso, matriz):
+
+    """
+    Recebe a chave de acesso e criptografa ela pela cifra de hill por uma matriz chave.
+
+    Entrada: chave de acesso (string) e matriz chave (array)
+    Saída: Resultado da criptografia (string)
+    """
     try:
         p1 = chave_acesso[:3] + chave_acesso[2]
 
@@ -30,6 +37,12 @@ def criptografaChave(chave_acesso, matriz):
 
 
 def criptografaCPF(cpf, matriz):
+    """
+    Recebe o CPF e criptografa ele pela cifra de hill por uma matriz chave.
+
+    Entrada: CPF (int) e matriz chave (array)
+    Saída: Resultado da criptografia (string)
+    """
     try:
         cpf = cpf + "0"
         p1 = hillCipherNum(cpf[:4], matriz)
@@ -46,6 +59,12 @@ def criptografaCPF(cpf, matriz):
 
 
 def descriptografaCPF(cpf, matriz):
+    """
+    Realiza a descriptografia de um CPF e retorna o CPF descriptografado.
+
+    Entrada: CPF criptografado (string) e matriz chave (array)
+    Saída: CPF descriptografado (string)
+    """
     try:
         cpf = list(cpf)
         result1 = decifrarNum(matriz, cpf[0:4])
@@ -63,6 +82,12 @@ def descriptografaCPF(cpf, matriz):
         return e
 
 def criptografaProtocolo(protocolo, matriz):
+    """
+    Recebe o protocolo de votação e criptografa ele pela cifra de hill por uma matriz chave.
+
+    Entrada: protocolo (string) e matriz chave (array)
+    Saída: Resultado da criptografia (string)
+    """
     try:
         protocolo = protocolo[:3] + 'X' + protocolo[3:] + "000"
         result1 = hillCipher(protocolo[0:4], matriz)
@@ -85,6 +110,12 @@ def limpar():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def descriptografaProtocolo(protocolo_crypto, matriz):
+    """
+    Realiza a descriptografia de um protocolo de votação e retorna o protocolo descriptografado.
+
+    Entrada: protocolo criptografado (string) e matriz chave (array)
+    Saída: protocolo descriptografado (string)
+    """
     try:
         p1 = protocolo_crypto[0:4]
         p2 = protocolo_crypto[4:8]

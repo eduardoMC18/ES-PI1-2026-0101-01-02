@@ -13,6 +13,13 @@ from crypto.hillCipher import *
 from Logs.ocorrencias import log_abertura, log_acesso_negado, log_voto_duplo, log_voto_sucesso, log_encerramento, exibir_logs
 
 def fecharVotacao(conexao):
+    """
+    Faz a validação com cpf, titulo de eleitor e chave de acesso, depois verifica se é mesario.
+    Após isso encerra a votação.
+
+    Entrada: conexão com o banco de dados (object)
+    saída: None
+    """
     titulo_eleitor = input("Digite o titulo de eleitor: ")
     cpf = input("Digite os primeiros 4 digitos do seu CPF: ")
     chave_acesso = input("Digite a chave de acesso: ")
@@ -49,7 +56,6 @@ def fecharVotacao(conexao):
                     print("Votação encerrada com sucesso!")
                     log_encerramento()
                     return
-                    return 0  # VotacaoAberta = 0
                 else:
                     print("Chave de acesso incorreta. Encerramento cancelado.")
                     log_acesso_negado()
@@ -66,6 +72,12 @@ def fecharVotacao(conexao):
         log_acesso_negado()
 
 def votacao_menu():
+    """
+    cria um menu para interligar os sistemas dentro do módulo de votação
+
+    Entrada: None
+    Return: None
+    """
     a = 0
     while a != 4:
         a = int(input("Escolha uma opção:\n1-Sistema Votação\n2-Auditoria Do Sistema de Votação\n3-Resultado da Votação\n4- Sair\n\nEscolha uma opção: "))
@@ -88,6 +100,13 @@ def votacao_menu():
                 print("Opcão Inválida")
 
 def abrirSistemaVotacao(conexao):
+    """
+    Realiza a validação com titulo de eleitor, cpf e chave de acesso. Verifica se o usuario é mesario.
+    Realiza a zerézima.
+
+    Entrada: conexão com o banco de dados (object)
+    Sáida: None
+    """
     titulo_eleitor = input("Digite o titulo de eleitor: ")
     cpf = input("Digite os primeiros 4 digitos do seu CPF: ")
     chave_acesso = input("Digite a chave de acesso: ")
@@ -154,6 +173,11 @@ def abrirSistemaVotacao(conexao):
         log_acesso_negado()
 
 def menu_sistema_votacao():
+    """
+    Cria um menu para as votações.
+    Entrada: None
+    Saída: None
+    """
     print("Escolha uma opção: \n1-Votação\n2-Encerrar Sistema de Votação")
     a = input("")
     match a:
@@ -167,6 +191,14 @@ def menu_sistema_votacao():
             print("Opcão Inválida")
 
 def votacao(conexao):
+    """
+    Faz a validação com o titulo de eleitor, cpf e chave de acesso. Verifica se o usuário ja realizou o voto.
+    Imprime no terminal o candidato escolhido pelo usuário e pede a confirmação do voto.
+    Cria o voto e o protocolo na tabela votos e atualiza o status_voto para 1 (ja votou).
+
+    Entrada: conexao com o banco de dados.
+    Saída: None
+    """
     titulo_eleitor = input("Digite o titulo de eleitor: ")
     cpf = input("Digite os primeiros 4 digitos do seu CPF: ")
     chave_acesso = input("Digite a chave de acesso: ")
@@ -246,6 +278,11 @@ def votacao(conexao):
     menu_sistema_votacao()
     
 def resultado_votacao():
+    """
+    Cria um menu para a finalização do processo de votação.
+    Entrada: None
+    Sáida: None
+    """
     options = 0
     while not options == 5:
         options = int(input("Escolha uma opção:\n1-Boletim de Urna\n2-Estatísticas de Comparecimento\n3-Votos por Partido\n4-Validação de Integridade\n5- Sair\n\nEscolha uma opção: "))
