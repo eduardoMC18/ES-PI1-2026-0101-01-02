@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from utils.utils import criptografaCPF, criptografaChave, criptografaProtocolo,descriptografaCPF, chave, limpar
+from utils.utils import criptografaCPF, criptografaChave, criptografaProtocolo,descriptografaCPF, chave, descriptografaProtocolo, limpar
 import gerenciamento.infra.database
 from gerenciamento.infra.database import conta_votos, conta_partido_votos
 from crypto.hillCipher import *
@@ -39,14 +39,17 @@ def fecharVotacao(conexao):
     
             if confirmar == 'sim':    
 
+                #segunda confirmacao da chave:
                 chave_confirmacao = input("Digite novamente sua chave de acesso para confirmar: ")
                 chave_confirmacao_crypto = criptografaChave(chave_confirmacao, chave)
 
                 if chave_confirmacao_crypto == eleitor['chave_acesso']:
                     cursor = conexao.cursor()
+                    cursor.execute("UPDATE eleitores SET status_voto = 1 WHERE id < 9999")
                     print("Votação encerrada com sucesso!")
                     log_encerramento()
                     return
+                    return 0  # VotacaoAberta = 0
                 else:
                     print("Chave de acesso incorreta. Encerramento cancelado.")
                     log_acesso_negado()
@@ -65,20 +68,21 @@ def fecharVotacao(conexao):
 def votacao_menu():
     a = 0
     while a != 4:
-        a = int(input("Escolha uma opção:\n1-Sistema Votação\n2-Auditoria Do Sistema de Votação\n3-Resultado da Votação\n4-Voltar\n\nEscolha uma opção: "))
+        a = int(input("Escolha uma opção:\n1-Sistema Votação\n2-Auditoria Do Sistema de Votação\n3-Resultado da Votação\n4- Sair\n\nEscolha uma opção: "))
         match a:
             case 1: 
                 limpar()
                 abrirSistemaVotacao(gerenciamento.infra.database.conexao)
             case 2:
+                print("\n")
                 limpar()
-                exibir_logs()
+                auditoria_sistema_votacao(gerenciamento.infra.database.conexao)
             case 3:
                 limpar()
                 resultado_votacao()
             case 4:
                 limpar()
-                print("Voltando...")
+                print("Saindo...")
                 return
             case _:
                 print("Opcão Inválida")
@@ -120,6 +124,7 @@ def abrirSistemaVotacao(conexao):
                     cursor = conexao.cursor()
                     cursor.execute("TRUNCATE TABLE votos")
                     cursor.execute("UPDATE eleitores SET status_voto = 0 WHERE id < 9999")
+                    # cursor.execute("UPDATE votos SET status_voto = true")
                     
                     conexao.commit()
 
@@ -243,7 +248,7 @@ def votacao(conexao):
 def resultado_votacao():
     options = 0
     while not options == 5:
-        options = int(input("Escolha uma opção:\n1-Boletim de Urna\n2-Estatísticas de Comparecimento\n3-Votos por Partido\n4-Validação de Integridade\n5-Voltar\n\nEscolha uma opção: "))
+        options = int(input("Escolha uma opção:\n1-Boletim de Urna\n2-Estatísticas de Comparecimento\n3-Votos por Partido\n4-Validação de Integridade\n5- Sair\n\nEscolha uma opção: "))
         match options:
             case 1: 
                 limpar()
@@ -259,7 +264,7 @@ def resultado_votacao():
                 validacao_integridade(gerenciamento.infra.database.conexao)
             case 5:
                 limpar()
-                print('Voltando...')
+                print('Saindo...')
                 return
             case _:
                 print("Opcão Inválida")
@@ -342,3 +347,21 @@ def validacao_integridade(conexao):
         print("Percentual de Integridade:", (votos_total / votos_eleitor) * 100, '\n')
     except Error as e:
         print(e)
+
+
+def auditoria_sistema_votacao(conexao):
+    options = 0
+    while not options == 5:
+        options = int(input("Escolha uma opção:\n1-Exibir Logs de Ocorrência\n2-Exibir protocolos de votação\n\nEscolha uma opção: "))
+        match options:
+            case 1:
+                exibir_logs()
+            case 2:
+                try:
+                    sql = 'SELECT protocolo FROM votos;'
+                    cursor = conexao.cursor()
+                    cursor.execute(sql)
+                    for protocolo in cursor.fetchone():
+                        print('\nPROTOCOLO: ',descriptografaProtocolo(protocolo,chave),'\n')
+                except Error as e:
+                    print(e)

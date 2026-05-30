@@ -83,9 +83,36 @@ def criptografaProtocolo(protocolo, matriz):
     
 def limpar():
     os.system('cls' if os.name == 'nt' else 'clear')
-# print(descriptografaCPF('OFVSJQSLVSIM',chave))
-# print(criptografaCPF('54854174854', chave))
 
-# print(criptografaChave("EDC2412",chave))
+def descriptografaProtocolo(protocolo_crypto, matriz):
+    try:
+        p1 = protocolo_crypto[0:4]
+        p2 = protocolo_crypto[4:8]
+        p3 = protocolo_crypto[8:12]
+        p4 = protocolo_crypto[12:16]
 
-# print(criptografaProtocolo("VRT269950134", chave))
+        result1 = decifrar(matriz, p1)
+        result2 = decifrarNum(matriz, p2)
+        result3 = decifrarNum(matriz, p3)
+        result4 = decifrarNum(matriz, p4)
+
+        protocolo = ''
+        for letra in result1:
+            protocolo += letra
+
+        for row in result2:
+            for num in row:
+                protocolo += str(num)
+
+        for row in result3:
+            for num in row:
+                protocolo += str(num)
+
+        for row in result4:
+            for num in row:
+                protocolo += str(num)
+
+        protocolo = protocolo[:3] + protocolo[4:-3]
+        return protocolo
+    except Exception as e:
+        return e
