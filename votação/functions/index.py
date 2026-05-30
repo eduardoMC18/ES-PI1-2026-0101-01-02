@@ -307,6 +307,11 @@ def resultado_votacao():
                 print("Opcão Inválida")
 
 def boletim_urna(conexao):
+    """
+    Mostra o boletim de urna com a contagem dos votos e o candidato vencedor.
+    Entrada: conexao - conexão ativa com o banco de dados (object)
+    Saída: None
+    """
     try:
         cursor = conexao.cursor(dictionary = True)
 
@@ -343,6 +348,11 @@ def boletim_urna(conexao):
         print(e)
         
 def estatistica_de_comparecimento(conexao):
+    """
+    Compara a quantidade de votos com a quantidade de eleitores aptos para votar.
+    Entrada: conexao - conexão ativa com o banco de dados (object)
+    Saída: None
+    """
     try:
         cursor = conexao.cursor()
         cursor.execute("SELECT COUNT(*) FROM eleitores WHERE status_voto = 1")
@@ -364,6 +374,11 @@ def estatistica_de_comparecimento(conexao):
         print(e)
 
 def votos_por_partido(conexao):
+    """
+    Chama a função conta_partidos_votos() para contar a quantidade de votos por partido da votação.
+    Entrada: conexao - conexão ativa com o banco de dados (object)
+    Saída: None
+    """
     try:
         conta_partido_votos()
         
@@ -371,6 +386,11 @@ def votos_por_partido(conexao):
         print(e)
 
 def validacao_integridade(conexao):
+    """
+    Verifica a integridade dos dados da votação comparando o número de eleitores que votaram com a quantidade de votos.
+    Entrada: conexao - conexão ativa com o banco de dados (object)
+    Saída: None
+    """
     try:
         cursor = conexao.cursor()
         cursor.execute("SELECT COUNT(*) FROM eleitores WHERE status_voto = 1")
@@ -387,6 +407,11 @@ def validacao_integridade(conexao):
 
 
 def auditoria_sistema_votacao(conexao):
+    """
+    Abre o menu da auditoria da votação.
+    Entrada: conexao - conexão ativa com o banco de dados (object)
+    Saída: None
+    """
     options = 0
     while not options == 5:
         options = int(input("Escolha uma opção:\n1-Exibir Logs de Ocorrência\n2-Exibir protocolos de votação\n\nEscolha uma opção: "))
