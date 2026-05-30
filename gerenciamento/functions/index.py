@@ -11,6 +11,19 @@ from utils.utils import criptografaCPF, criptografaChave, chave, descriptografaC
 
 
 def gerenciamento_menu():
+    """
+    Exibe o menu de gerenciamento de eleitores e direciona o usuário para as ações correspondentes.
+
+    A função roda em um loop contínuo até que o usuário decida voltar (opção 6). 
+    Ela lê a entrada do teclado, limpa a tela e chama as respectivas funções baseadas na escolha.
+
+    Args:
+        Nenhum.
+
+    Returns:
+        None: A função não retorna nenhum valor.
+    """
+
     a = 0
     while a != 6:
         a = int(input("Escolha uma opção:\n1-Cadastrar eleitor\n2-Buscar eleitor\n3-Remover eleitor\n4-Editar eleitor\n5-Listar eleitor\n6-Voltar\n\nEscolha uma opção: "))
@@ -39,6 +52,26 @@ def gerenciamento_menu():
  
 
 def cadastrar_eleitor():
+        """
+    Realiza o cadastro de um novo eleitor no banco de dados após validar os dados fornecidos.
+
+    A função processa o nome completo para extrair as iniciais e gerar uma chave de acesso,
+    valida se o CPF e o Título de Eleitor são matematicamente válidos e converte a opção de
+    mesário para um tipo booleano. Se todas as validações passarem, os dados sensíveis são
+    criptografados e salvos no banco de dados.
+
+    Args:
+        nome (str): O nome completo do eleitor (deve conter pelo menos nome e sobrenome).
+        cpf (str): String com os 11 dígitos do CPF (apenas números).
+        titulo_eleitor (str): String com os 12 dígitos do título de eleitor (apenas números).
+        mesario_input (str): Sinalização se o eleitor é mesário (aceita 'y' para Sim, 
+            qualquer outra tecla será considerada não).
+
+    Returns:
+        None: A função exibe mensagens de sucesso ou erro diretamente no terminal e 
+              não retorna valores.
+    """
+        
         nome = input("Digite o nome: ").strip()  
         partes_nome = nome.split()
         if len(partes_nome) < 2:
@@ -70,6 +103,15 @@ def cadastrar_eleitor():
 
         
 def validar_cpf(cpf):
+    """
+    Valida um número de CPF calculando seus dígitos verificadores.
+
+    Args:
+        cpf (str): String contendo os 11 dígitos do CPF (apenas números).
+
+    Returns:
+        bool: Retorna True se o CPF for matematicamente válido, False caso contrário.
+    """
     if len(cpf) != 11:
         return False
     else:
@@ -91,6 +133,16 @@ def validar_cpf(cpf):
             return False
             
 def validar_titulo(titulo_eleitor):
+    """
+    Valida o Título de Eleitor com base no tamanho, UF e cálculo dos dois dígitos verificadores.
+
+    Args:
+        titulo_eleitor (str): String contendo os 12 dígitos do título (apenas números).
+
+    Returns:
+        bool: Retorna True se os dígitos verificadores calculados baterem com os informados, 
+              False caso contrário.
+    """
     if len(titulo_eleitor) != 12:
         return False
     
@@ -121,8 +173,22 @@ def validar_titulo(titulo_eleitor):
 
     return dv1p == dv1 and dv2p == dv2
 
-# Busca eleitor
+
 def buscar_eleitor(conexao):
+    """
+    Busca um eleitor no banco de dados por meio do CPF ou do Título de Eleitor.
+
+    A função interage com o usuário para definir o tipo de busca, aplica as validações
+    necessárias e faz uma consulta segura utilizando parâmetros.
+    Se o eleitor for encontrado, exibe seus dados descriptografados na tela.
+
+    Args:
+        conexao (mysql.connector.connection.MySQLConnection): Objeto ativo de conexão com 
+            o banco de dados SQL.
+
+    Returns:
+        None: A função apenas exibe o resultado diretamente no terminal via print.
+    """
 
     print("Buscar eleitor: ")
     print("1- Busca por CPF.")
@@ -177,8 +243,23 @@ def buscar_eleitor(conexao):
     except Error as e:
         print("Erro ao buscar:", e)
 
-# Remover eleitor
 def remover_eleitor(conexao):
+    """
+    Busca um eleitor por CPF ou Título e, após confirmação do usuário, remove-o do banco de dados.
+
+    A função interage com o usuário para obter a chave de busca, realiza a validação do CPF
+    (se aplicável) e pesquisa o registro. Caso o eleitor seja encontrado, seus dados são 
+    exibidos e o sistema solicita uma confirmação textual ('s') antes de executar a 
+    exclusão definitiva.
+
+    Args:
+        conexao (mysql.connector.connection.MySQLConnection): Objeto ativo de conexão com 
+            o banco de dados SQL.
+
+    Returns:
+        None: A função realiza operações diretamente no banco e exibe mensagens via terminal.
+    """
+
     print("\nRemover eleitor:")
     print("1 - Buscar por CPF")
     print("2 - Buscar por título de eleitor")
@@ -248,6 +329,20 @@ def remover_eleitor(conexao):
 
 
 def editar_eleitor():
+    """
+    Busca um eleitor por CPF ou Título e atualiza seus dados cadastrais no banco de dados.
+
+    A função localiza o eleitor no banco e permite ao usuário alterar o Nome, Título 
+    de Eleitor e o status de Mesário. Inputs vazios são interpretados como o desejo 
+    de manter a informação atual. As alterações são validadas e consolidadas via UPDATE.
+
+    Args:
+        Nenhum.
+
+    Returns:
+        None: A função exibe o status da atualização na tela e não retorna valores.
+    """
+
     print("\nEditar eleitor:")
     print("1 - Buscar por CPF")
     print("2 - Buscar por título de eleitor")
